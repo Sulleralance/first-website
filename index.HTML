@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Verse - Scripture & Reflection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 1s ease-in-out;
+            padding: 20px;
+        }
+
+        /* Theme Classes */
+        .theme-hope {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .theme-peace {
+            background: linear-gradient(135deg, #667eea 0%, #4facfe 100%);
+            color: #ffffff;
+        }
+
+        .theme-joy {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #ffffff;
+        }
+
+        .theme-love {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #2d3436;
+        }
+
+        .theme-strength {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #ffffff;
+        }
+
+        .theme-wisdom {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #2d3436;
+        }
+
+        .theme-faith {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #2d3436;
+        }
+
+        .theme-grace {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal.hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-in-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2d3436;
+        }
+
+        .verse-text {
+            font-size: 22px;
+            line-height: 1.8;
+            margin: 25px 0;
+            font-style: italic;
+            color: #333;
+        }
+
+        .verse-reference {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background-color: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background-color: #764ba2;
+        }
+
+        .btn-secondary {
+            background-color: #6c5ce7;
+        }
+
+        .btn-secondary:hover {
+            background-color: #764ba2;
+        }
+
+        /* Main Container */
+        .container {
+            text-align: center;
+            z-index: 100;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .verse-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .verse-card h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .verse-card .verse-text {
+            font-size: 24px;
+            line-height: 2;
+            margin: 20px 0;
+            color: inherit;
+        }
+
+        .verse-card .verse-reference {
+            color: inherit;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        /* Notes Section */
+        .notes-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .notes-section h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            resize: vertical;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        .notes-section textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .save-btn {
+            background-color: #00b894;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .save-btn:hover {
+            background-color: #00a383;
+        }
+
+        .theme-name {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 10px;
+            text-transform: capitalize;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 36px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                padding: 30px;
+            }
+
+            .verse-text {
+                font-size: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .verse-card {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="theme-hope">
+    <!-- Daily Verse Modal -->
+    <div id="dailyModal" class="modal">
+        <div class="modal-content">
+            <h1>✨ Daily Verse ✨</h1>
+            <p class="verse-text" id="dailyVerseText"></p>
+            <p class="verse-reference" id="dailyVerseRef"></p>
+            <button class="btn" onclick="closeDailyModal()">Begin Your Day</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h1>Daily Scripture & Reflection</h1>
+
+        <!-- Random Verse Card -->
+        <div class="verse-card">
+            <h2>Today's Verse</h2>
+            <p class="verse-text" id="verseText"></p>
+            <p class="verse-reference" id="verseRef"></p>
+            <p class="theme-name" id="themeName"></p>
+            <div class="button-group">
+                <button class="btn" onclick="getRandomVerse()">✨ New Verse</button>
+                <button class="btn btn-secondary" onclick="copyToClipboard()">📋 Copy</button>
+            </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="notes-section">
+            <h3>📝 My Reflection</h3>
+            <textarea id="notesTextarea" placeholder="Write your thoughts, reflections, and prayers here..."></textarea>
+            <button class="save-btn" onclick="saveNotes()">💾 Save My Notes</button>
+        </div>
+    </div>
+
+    <script>
+        // Verses organized by theme with spiritual meanings
+        const verseThemes = {
+            hope: {
+                theme: 'Hope',
+                color: 'theme-hope',
+                verses: [
+                    { text: '"For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope."', ref: 'Jeremiah 29:11' },
+                    { text: '"Why are you downcast, O my soul? Why so disturbed within me? Put your hope in God, for I will yet praise him, my Savior."', ref: 'Psalm 42:11' },
+                    { text: '"May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope."', ref: 'Romans 15:13' }
+                ]
+            },
+            peace: {
+                theme: 'Peace',
+                color: 'theme-peace',
+                verses: [
+                    { text: '"Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid."', ref: 'John 14:27' },
+                    { text: '"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."', ref: 'Philippians 4:6' },
+                    { text: '"The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters."', ref: 'Psalm 23:1-2' }
+                ]
+            },
+            joy: {
+                theme: 'Joy',
+                color: 'theme-joy',
+                verses: [
+                    { text: '"Rejoice in the Lord always. I will say it again: Rejoice! Let your gentleness be evident to all. The Lord is near."', ref: 'Philippians 4:4-5' },
+                    { text: '"This is the day the Lord has made; let us rejoice and be glad in it."', ref: 'Psalm 118:24' },
+                    { text: '"The joy of the Lord is your strength."', ref: 'Nehemiah 8:10' }
+                ]
+            },
+            love: {
+                theme: 'Love',
+                color: 'theme-love',
+                verses: [
+                    { text: '"Love is patient, love is kind. It does not envy, it does not boast, it is not proud. Love never fails."', ref: '1 Corinthians 13:4-8' },
+                    { text: '"Greater love has no one than this: to lay down one\'s life for one\'s friends."', ref: 'John 15:13' },
+                    { text: '"And now these three remain: faith, hope and love. But the greatest of these is love."', ref: '1 Corinthians 13:13' }
+                ]
+            },
+            strength: {
+                theme: 'Strength',
+                color: 'theme-strength',
+                verses: [
+                    { text: '"I can do all this through him who gives me strength."', ref: 'Philippians 4:13' },
+                    { text: '"The Lord is my strength and my shield; my heart trusts in him, and he helps me."', ref: 'Psalm 28:7' },
+                    { text: '"Be strong and courageous. Do not be afraid or terrified because of them, for the Lord your God goes with you."', ref: 'Deuteronomy 31:6' }
+                ]
+            },
+            wisdom: {
+                theme: 'Wisdom',
+                color: 'theme-wisdom',
+                verses: [
+                    { text: '"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight."', ref: 'Proverbs 3:5-6' },
+                    { text: '"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you."', ref: 'James 1:5' },
+                    { text: '"For the Lord gives wisdom; from his mouth come knowledge and understanding."', ref: 'Proverbs 2:6' }
+                ]
+            },
+            faith: {
+                theme: 'Faith',
+                color: 'theme-faith',
+                verses: [
+                    { text: '"Now faith is confidence in what we hope for and assurance about what we do not see."', ref: 'Hebrews 11:1' },
+                    { text: '"So then, just as you received Christ Jesus as Lord, continue to live your lives in him, rooted and built up in him, strengthened in the faith."', ref: 'Colossians 2:6-7' },
+                    { text: '"We walk by faith, not by sight."', ref: '2 Corinthians 5:7' }
+                ]
+            },
+            grace: {
+                theme: 'Grace',
+                color: 'theme-grace',
+                verses: [
+                    { text: '"For it is by grace you have been saved, through faith—and this is not from yourselves, it is the gift of God."', ref: 'Ephesians 2:8' },
+                    { text: '"The grace of the Lord Jesus Christ, and the love of God, and the fellowship of the Holy Spirit be with you all."', ref: '2 Corinthians 13:14' },
+                    { text: '"Grace and peace to you from God our Father and the Lord Jesus Christ."', ref: '1 Corinthians 1:3' }
+                ]
+            }
+        };
+
+        let currentTheme = 'hope';
+        let currentVerse = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNotes();
+            showDailyVerse();
+            getRandomVerse();
+        });
+
+        // Show Daily Verse Modal
+        function showDailyVerse() {
+            const today = new Date().toDateString();
+            const lastShown = localStorage.getItem('dailyVerseDate');
+
+            if (lastShown !== today) {
+                const themes = Object.keys(verseThemes);
+                const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+                const themeData = verseThemes[randomTheme];
+                const randomVerse = themeData.verses[Math.floor(Math.random() * themeData.verses.length)];
+
+                document.getElementById('dailyVerseText').textContent = randomVerse.text;
+                document.getElementById('dailyVerseRef').textContent = randomVerse.ref;
+                document.getElementById('dailyModal').classList.remove('hidden');
+
+                localStorage.setItem('dailyVerseDate', today);
+            }
+        }
+
+        function closeDailyModal() {
+            document.getElementById('dailyModal').classList.add('hidden');
+        }
+
+        // Get Random Verse with Theme
+        function getRandomVerse() {
+            const themes = Object.keys(verseThemes);
+            currentTheme = themes[Math.floor(Math.random() * themes.length)];
+            const themeData = verseThemes[currentTheme];
+            const randomVerse = themeData.verses[Math.floor(Math.random() * themeData.verses.length)];
+
+            document.body.className = themeData.color;
+            document.getElementById('verseText').textContent = randomVerse.text;
+            document.getElementById('verseRef').textContent = randomVerse.ref;
+            document.getElementById('themeName').textContent = `Theme: ${themeData.theme}`;
+
+            currentVerse = randomVerse;
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard() {
+            const text = `${currentVerse.text}\n\n${currentVerse.ref}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Verse copied to clipboard!');
+            });
+        }
+
+        // Notes Functions
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            const currentDate = new Date().toLocaleString();
+            const noteEntry = {
+                date: currentDate,
+                theme: currentTheme,
+                verse: currentVerse?.ref || 'No verse selected',
+                notes: notes
+            };
+
+            const existingNotes = JSON.parse(localStorage.getItem('verseNotes')) || [];
+            existingNotes.push(noteEntry);
+            localStorage.setItem('verseNotes', JSON.stringify(existingNotes));
+
+            alert('Notes saved! ✨');
+            document.getElementById('notesTextarea').value = '';
+        }
+
+        function loadNotes() {
+            const notes = localStorage.getItem('verseNotes');
+            if (notes) {
+                // Notes are stored and can be viewed in browser console or with additional UI
+                console.log('Previous notes:', JSON.parse(notes));
+            }
+        }
+    </script>
+</body>
+</html>
